@@ -1,0 +1,419 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+/* 화면 관리 */
+.screen {
+    display: none;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* 설정 화면 스타일 */
+#setup-screen {
+    text-align: center;
+}
+
+#setup-screen h1 {
+    color: white;
+    font-size: 3em;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.setup-container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.setup-container label {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+#team-count {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1em;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+#start-game, #reset-game {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#start-game:hover, #reset-game:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* 게임 화면 스타일 */
+#game-screen {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+#game-screen h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* 스크롤 컨테이너 */
+#track-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background: #f9f9f9;
+}
+
+/* 점수 표시 영역 */
+#score-display {
+    position: relative;
+    height: 40px;
+    min-width: fit-content;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.score-line {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    position: relative;
+}
+
+.score-label {
+    position: absolute;
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 3px 5px;
+    border-radius: 3px;
+    background: #f0f0f0;
+    text-align: center;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.score-label.negative {
+    color: #e74c3c;
+    font-size: 0.85em;
+}
+
+.score-label.zero {
+    color: #3498db;
+    background: #e8f4f8;
+    font-size: 1.1em;
+    font-weight: 900;
+}
+
+.score-label.positive {
+    color: #27ae60;
+    font-size: 0.85em;
+}
+
+/* 5점 단위 강조 */
+.score-label.negative:nth-child(6),
+.score-label.positive:nth-child(16) {
+    font-size: 1em;
+    font-weight: 900;
+    background: #e0e0e0;
+}
+
+/* 경마 트랙 */
+#race-track {
+    position: relative;
+    height: 400px;
+    min-width: fit-content;
+    background: linear-gradient(180deg, #f9f9f9 0%, #e0e0e0 100%);
+}
+
+.track-lines {
+    position: relative;
+    height: 100%;
+    display: flex;
+}
+
+.track-line {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: #e0e0e0;
+}
+
+/* 0점 라인 스타일 */
+.track-line.zero {
+    width: 4px;
+    background: #3498db;
+}
+
+/* 5점 단위 라인 강조 */
+.track-line.major {
+    width: 2px;
+    background: #999;
+}
+
+.track-line.center {
+    width: 4px;
+    background: #3498db;
+}
+
+/* center-line 제거 (더 이상 사용하지 않음) */
+
+/* 말 컨테이너 */
+#horses-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+/* 말 스타일 */
+.horse-lane {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    position: relative;
+}
+
+/* 말 래퍼 */
+.horse-wrapper {
+    position: absolute;
+    left: 0;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: left 0.5s ease;
+}
+
+/* 말 이름 태그 */
+.horse-name-tag {
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.horse {
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    transform: scaleX(-1);  /* 좌우 반전으로 오른쪽을 바라보도록 */
+    cursor: pointer;
+}
+
+.horse-label {
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    color: #555;
+    background: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* 컨트롤 패널 */
+#control-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.horse-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+}
+
+/* 팀 정보 컨테이너 */
+.team-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+}
+
+/* 팀 이름 입력 필드 */
+.team-name-input {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    transition: all 0.3s;
+}
+
+.team-name-input:hover {
+    background: white;
+    border-color: #dee2e6;
+}
+
+.team-name-input:focus {
+    outline: none;
+    background: white;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* 점수 표시 */
+.score-display {
+    font-weight: bold;
+    text-align: center;
+}
+
+.control-button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background: #3498db;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.control-button:hover {
+    background: #2980b9;
+}
+
+.control-button:active {
+    transform: scale(0.95);
+}
+
+.control-button.minus {
+    background: #e74c3c;
+}
+
+.control-button.minus:hover {
+    background: #c0392b;
+}
+
+/* 게임 버튼들 */
+.game-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.game-buttons button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#new-game {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    #track-scroll-container {
+        margin-bottom: 20px;
+    }
+
+    #race-track {
+        height: 300px;
+    }
+
+    .horse {
+        width: 50px;
+        height: 35px;
+        font-size: 1.5em;
+    }
+
+    .horse-name-tag {
+        font-size: 0.7em;
+        padding: 1px 4px;
+    }
+
+    .team-name-input {
+        font-size: 0.9em;
+    }
+
+    #control-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .score-label {
+        font-size: 0.7em;
+        padding: 2px 3px;
+    }
+
+    .score-label.zero {
+        font-size: 0.9em;
+    }
+}

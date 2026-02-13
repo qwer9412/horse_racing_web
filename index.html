@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경마 게임 현황판</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 팀 개수 설정 화면 -->
+    <div id="setup-screen" class="screen active">
+        <h1>경마 게임</h1>
+        <div class="setup-container">
+            <label for="team-count">팀 개수를 선택하세요:</label>
+            <select id="team-count">
+                <option value="2">2팀</option>
+                <option value="3">3팀</option>
+                <option value="4" selected>4팀</option>
+                <option value="5">5팀</option>
+                <option value="6">6팀</option>
+                <option value="7">7팀</option>
+                <option value="8">8팀</option>
+            </select>
+            <button id="start-game">게임 시작</button>
+        </div>
+    </div>
+
+    <!-- 게임 화면 -->
+    <div id="game-screen" class="screen">
+        <h1>경마 게임 현황판</h1>
+
+        <!-- 경마 트랙 스크롤 컨테이너 -->
+        <div id="track-scroll-container">
+            <!-- 점수 표시 영역 -->
+            <div id="score-display">
+                <div class="score-line">
+                    <!-- 점수는 JavaScript에서 동적으로 생성됩니다 -->
+                </div>
+            </div>
+
+            <!-- 경마 트랙 -->
+            <div id="race-track">
+                <div class="track-lines">
+                    <!-- 트랙 라인은 JavaScript에서 동적으로 생성됩니다 -->
+                </div>
+                <div id="horses-container"></div>
+            </div>
+        </div>
+
+        <!-- 컨트롤 패널 -->
+        <div id="control-panel"></div>
+
+        <!-- 게임 관리 버튼들 -->
+        <div class="game-buttons">
+            <button id="reset-game">점수 리셋</button>
+            <button id="new-game">새 게임</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
